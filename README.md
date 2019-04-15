@@ -1,6 +1,6 @@
 # shallow sequenced metagenome analysis
 ## the project has a emphasis on rumen but could be applied to various environment. Most importantly, finding the most relevant genome data base. 
-## If all fails, there is always the RefSeq...
+## If all fails, there is always the RefSeq and blast ...
 
 ### reference data set: 
 + from paper: https://www.nature.com/articles/s41467-018-03317-6#Sec17
@@ -18,10 +18,14 @@
 ### analysis prcedures:
 
 + use bwa.
-  + create idex for the reference genome:
+  + create idex for the reference genome (need to concat all and checked. no duplicated headers):
     ```
-    bwa index -p ../bwa_index/rmg_genomes *.fa
+    cd rumen/genomes
+    cat *.fa > all_rmgs.fa
+    bwa index -p ../bwa_index/rmg_genomes all_rmgs.fa
     ```
+    
+    NOTE: don't use pipe to combine cat and bwa... it runs into issues.
   
   + location of the shallow sequenced metagenomes
     ```
