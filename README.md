@@ -43,8 +43,7 @@
     ```
     mkdir bwa_bams
     cd filtered_fq
-    for i in *.fq; do echo "bwa mem -t 4 /mnt/scratch/yangfan1/rumen/bwa_index/rmg_genomes $i | samtools sort -@4 -o ../bwa_bams/${i//.faq/.sorted.bam} -"; done > ../bwa_mapping.sh
-    bash ../bwa_mapping.sh
+    for i in *.fq; do bwa mem -t 4 /mnt/scratch/yangfan1/rumen/bwa_index/rmg_genomes $i | samtools sort -@4 -o ../bwa_bams/${i//.faq/.sorted.bam} -; done
     ```
 
   + get mapped reads only:
