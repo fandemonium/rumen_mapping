@@ -56,4 +56,5 @@
     cd /PATH/TO/WHERE/EVERYTHING/IS
     mkdir nr_20190414 && cd nr_20190414/
     wget ftp://ftp.ncbi.nlm.nih.gov/blast/db/nr.*.gz
+    for i in *.gz; do tar -zxvf $i; done
     ```
