@@ -27,9 +27,19 @@
     ```
     cd /PATH/TO/WHERE/EVERYTHING/IS
     cd 181214_fastqs
+    ```
+    
+  + quality filter fastqs: (maxee 0.5)
+    ```
+    mkdir filtered_fq && cd fastq  
+    for i in *.gz; do vsearch --threads 4 --fastq_filter $i --fastq_maxee 0.5 --fastq_maxns 0 --fastqout ../filtered_fq/${i//.fastq.gz/.maxee0.5.fq}; done
+    ```
+  
+  + mapping
+    ```
     mkdir bwa_bams
-    cd fastq
-    for i in *.gz; do echo "bwa mem -t 4 /mnt/scratch/yangfan1/rumen/bwa_index/rmg_genomes $i | samtools sort -@4 -o ../bwa_bams/${i//.fastq.gz/.sorted.bam} -"; done > ../bwa_mapping.sh
+    cd filtered_fq
+    for i in *.fq; do echo "bwa mem -t 4 /mnt/scratch/yangfan1/rumen/bwa_index/rmg_genomes $i | samtools sort -@4 -o ../bwa_bams/${i//.faq/.sorted.bam} -"; done > ../bwa_mapping.sh
     bash ../bwa_mapping.sh
     ```
 
