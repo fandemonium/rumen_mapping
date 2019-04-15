@@ -43,21 +43,21 @@
     ```
     mkdir bwa_bams
     cd filtered_fq
-    for i in *.fq; do bwa mem -t 4 /mnt/scratch/yangfan1/rumen/bwa_index/rmg_genomes $i | samtools sort -@4 -o ../bwa_bams/${i//.faq/.sorted.bam} -; done
+    for i in *.fq; do bwa mem -t 4 /mnt/scratch/yangfan1/rumen/bwa_index/rmg_genomes $i | samtools sort -@4 -o ../bwa_bams/${i//.fq/.sorted.bam} -; done
     ```
 
   + get mapped reads only:
     ```
     mkdir ../mapped_bam
-    for i in *.bam; do samtools view -b -F 4 $i > ../mapped_bam/${i//sorted/mapped}.bam; done
+    for i in *.bam; do samtools view -b -F 4 $i > ../mapped_bam/${i//sorted/mapped}; done
     ```
     
-  + mpileup (without reference fa, since SNP is not important here):
+  + mpileup (reference fa):
     ```
     cd /PATH/TO/WHERE/EVERYTHING/IS
     cd mapped_bam
-    mkdir ../noref_mpileup
-    for i in *.bam; do samtools mpileup $i > ../noref_mpileup/${i//.bam.bam/.min3.txt}; done
+    mkdir ../ref_mpileup
+    for i in *.bam; do samtools mpileup -f ../../rumen/genomes/all_rmgs.fa $i > ../noref_mpileup/${i//.bam/.ref.txt}; done
     ```
     
 + use blastx (diamond)
