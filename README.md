@@ -4,6 +4,7 @@
 
 ### reference data set: 
 + from paper: https://www.nature.com/articles/s41467-018-03317-6#Sec17
+ 
   `Assembly of 913 microbial genomes from metagenomic sequencing of the cow rumen`
 
 + assembled genome and proteome files can be downloaded via:
@@ -13,6 +14,8 @@
   wget http://datashare.is.ed.ac.uk/download/DS_10283_2772.zip
   ```
   + NOTE: need to do multiple unzip and untar.
+
+### analysis prcedures:
 
 + use bwa.
   + create idex for the reference genome:
@@ -30,4 +33,9 @@
     bash ../bwa_mapping.sh
     ```
 
+  + get mapped reads only:
+    ```
+    mkdir ../mapped_bam
+    for i in *.bam; do samtools view -b -F 4 $i > ../mapped_bam/${i//sorted/mapped}.bam; done
+    ```
 
