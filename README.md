@@ -59,7 +59,15 @@
     mkdir ../ref_mpileup
     for i in *.bam; do samtools mpileup -f ../../rumen/genomes/all_rmgs.fa $i > ../noref_mpileup/${i//.bam/.ref.txt}; done
     ```
-    
+  
+  + get reference header:
+    ```
+    cd /PATH/TO/WHERE/EVERYTHING/IS
+    cd rumen/genomes
+    grep ">" RMG_*.fa > ../RMG_genome_to_contigs.txt
+    cd ../proteomes
+    grep ">" RMG_*.faa > ../RMG_genome_to_proteome.txt
+    ```
 + use blastx (diamond)
  
   + get nr:
