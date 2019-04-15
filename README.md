@@ -48,7 +48,15 @@
     mkdir ../mapped_bam
     for i in *.bam; do samtools view -b -F 4 $i > ../mapped_bam/${i//sorted/mapped}.bam; done
     ```
-
+    
+  + mpileup (without reference fa, since SNP is not important here):
+    ```
+    cd /PATH/TO/WHERE/EVERYTHING/IS
+    cd mapped_bam
+    mkdir ../noref_mpileup
+    for i in *.bam; do samtools mpileup $i > ../noref_mpileup/${i//.bam.bam/.min3.txt}; done
+    ```
+    
 + use blastx (diamond)
  
   + get nr:
