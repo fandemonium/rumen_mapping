@@ -68,33 +68,33 @@
     cd ../proteomes
     grep ">" RMG_*.faa > ../RMG_genome_to_proteome.txt
     ```
-    
-  + bed file:
+
+  + create bed file from the proteome txt file:
     ```
+    paste -d "\t" <(cut -d ">" -f 2 RMG_genome_to_proteome.txt | cut -d " " -f 1 | rev | cut -d "_" -f 2- | rev) <(cut -d " " -f 3 RMG_genome_to_proteome.txt) <(cut -d " " -f 5 RMG_genome_to_proteome.txt) <(cut -d " " -f 1 RMG_genome_to_proteome.txt) <(cut -d " " -f 7 RMG_genome_to_proteome.txt) > RMG_proteome.bed
+    sed -i 's/.faa//g' RMG_proteome.bed 
+    sed -i 's/>//g' RMG_proteome.bed
     rev RMG_proteome.bed | cut -f 1 | rev | sed 's/\-1/\-/g' | sed 's/1/\+/g' > temp.txt
     paste -d "\t" <(cut -f 1-4 RMG_proteome.bed) <(rev RMG_genome_to_proteome.txt | cut -d "=" -f 1 | rev) <(cut -f 5 RMG_proteome.bed) > temp.bed
     mv rumen/temp.bed rumen/RMG_proteome.bed
-    
     ```
     
-    bed file in a format like this: id start end name some_value(eg. gc_content) strand
-    ```
-    k87_58769312    514     1122    RMG_1025:k87_58769312_1 0.268   +
-    k87_58769312    1307    2620    RMG_1025:k87_58769312_2 0.215   +
-    k87_58269671    207     698     RMG_1025:k87_58269671_1 0.250   -
-    ```
+      bed file in a format like this (need to be 6 columns): id start end name some_value(eg. gc_content) strand
+      ```
+      k87_58769312    514     1122    RMG_1025:k87_58769312_1 0.268   +
+      k87_58769312    1307    2620    RMG_1025:k87_58769312_2 0.215   +
+      k87_58269671    207     698     RMG_1025:k87_58269671_1 0.250   -
+      ```
   
-  + bedtools to find intersect:
+  + bedtools to find intersect and coverage:
     ```
     cd /PATH/TO/WHERE/EVERYTHING/IS
     cd 181214_fastqs
     mkdir intersects
     cd mapped_bam
+    # find intersect:
     for i in *.bam; do bedtools intersect -a ../../rumen/RMG_proteome.bed -b $i -bed -wa -wb -s > ../intersects/${i//mapped.bam/intersect.bed}; done
-    ```
-   
-  + bedtools to find coverage:
-    ```
+    # find coverage
     mkdir ../coverages
     for i in *.bam; do bedtools coverage -a ../../rumen/RMG_proteome.bed -b $i -s | grep -vw "0.0000000" > ../coverages/${i//mapped.bam/coverage.txt}; done
     ```
