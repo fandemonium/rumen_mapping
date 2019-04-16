@@ -72,13 +72,27 @@
   + bed file:
     ```
     rev RMG_proteome.bed | cut -f 1 | rev | sed 's/\-1/\-/g' | sed 's/1/\+/g' > temp.txt
+    paste -d "\t" <(cut -f 1-4 RMG_proteome.bed) <(rev RMG_genome_to_proteome.txt | cut -d "=" -f 1 | rev) <(cut -f 5 RMG_proteome.bed) > temp.bed
+    mv rumen/temp.bed rumen/RMG_proteome.bed
+    
     ```
     
-    bed file in a format like this: id start end name strand
+    bed file in a format like this: id start end name some_value(eg. gc_content) strand
     ```
-    k87_58769312    514     1122    RMG_1025:k87_58769312_1 +
-    k87_58769312    1307    2620    RMG_1025:k87_58769312_2 +
+    k87_58769312    514     1122    RMG_1025:k87_58769312_1 0.268   +
+    k87_58769312    1307    2620    RMG_1025:k87_58769312_2 0.215   +
+    k87_58269671    207     698     RMG_1025:k87_58269671_1 0.250   -
     ```
+  
+  + bedtools to find intersect:
+    ```
+    cd /PATH/TO/WHERE/EVERYTHING/IS
+    cd 181214_fastqs
+    mkdir intersects
+    cd mapped_bam
+    for i in *.bam; do bedtools intersect -a ../../rumen/RMG_proteome.bed -b $i -bed -wa -wb -s > ../intersects/${i//mapped.bam/intersect.bed}; done
+    ```
+    
     
 + use blastx (diamond)
  
