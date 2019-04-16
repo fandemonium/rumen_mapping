@@ -98,6 +98,9 @@
     # find coverage
     mkdir ../coverages
     for i in *.bam; do bedtools coverage -a ../../rumen/RMG_proteome.bed -b $i -s | grep -vw "0.0000000" > ../coverages/${i//mapped.bam/coverage.txt}; done
+    # coverage hist may be useful too.
+    mkdir ../coverages_hist
+    for i in *.bam; do bedtools coverage -a ../../rumen/RMG_proteome.bed -b $i -s -hist | grep -vw "1.0000000" > ../coverages_hist/${i//mapped.bam/coverage_hist.txt}; done
     ```
     
     
