@@ -48,13 +48,14 @@
 
   + get mapped reads only:
     ```
-    mkdir ../mapped_bam
-    for i in *.bam; do samtools view -b -F 4 $i > ../mapped_bam/${i//sorted/mapped}; done
+    mkdir ../bwa_bam
+    for i in *.bam; do samtools view -b -F 4 -q 10 $i > ../mapped_bam/${i//sorted/mapped}; done
     ```
     
-  + mpileup (reference fa):
+  + OPTIONAL: mpileup (reference fa):
     ```
     cd /PATH/TO/WHERE/EVERYTHING/IS
+    cd 181214_fastqs
     cd mapped_bam
     mkdir ../ref_mpileup
     for i in *.bam; do samtools mpileup -f ../../rumen/genomes/all_rmgs.fa $i > ../noref_mpileup/${i//.bam/.ref.txt}; done
