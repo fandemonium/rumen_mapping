@@ -68,6 +68,18 @@
     cd ../proteomes
     grep ">" RMG_*.faa > ../RMG_genome_to_proteome.txt
     ```
+    
+  + bed file:
+    ```
+    rev RMG_proteome.bed | cut -f 1 | rev | sed 's/\-1/\-/g' | sed 's/1/\+/g' > temp.txt
+    ```
+    
+    bed file in a format like this: id start end name strand
+    ```
+    k87_58769312    514     1122    RMG_1025:k87_58769312_1 +
+    k87_58769312    1307    2620    RMG_1025:k87_58769312_2 +
+    ```
+    
 + use blastx (diamond)
  
   + get nr:
