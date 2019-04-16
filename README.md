@@ -90,13 +90,13 @@
     cd 181214_fastqs
     mkdir intersects
     cd mapped_bam
-    for i in *.bam; do bedtools intersect -b ../../rumen/RMG_proteome.bed -a $i -bed -wa -wb -s > ../intersects/${i//mapped.bam/intersect.bed}; done
+    for i in *.bam; do bedtools intersect -a ../../rumen/RMG_proteome.bed -b $i -bed -wa -wb -s > ../intersects/${i//mapped.bam/intersect.bed}; done
     ```
    
   + bedtools to find coverage:
     ```
     mkdir ../coverages
-    for i in *.bam; do bedtools coverage -a ../../rumen/RMG_proteome.bed -b $i -s | grep -vw "0.0000000" > ../coverages/${i//mapped.bam/coverages.txt}; done
+    for i in *.bam; do bedtools coverage -a ../../rumen/RMG_proteome.bed -b $i -s | grep -vw "0.0000000" > ../coverages/${i//mapped.bam/coverage.txt}; done
     ```
     
     
