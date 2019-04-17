@@ -15,6 +15,26 @@
   ```
   + NOTE: need to do multiple unzip and untar.
 
++ the datashare site above only contains wgs contigs, and protein sequences. The identified and binned rumen unculatured genomes (RUG) are in ENA (as well as the raw sequences etc...). 
+  ```
+  # ENA study accession number: PRJEB21624
+  # use ENA protal api generater: will print a table of what the study contains
+  curl -X GET --header 'Accept: text/plain' 'https://www.ebi.ac.uk/ena/portal/api/links/study?accession=PRJEB21624' 
+  ####result_id	description	entry_cnt
+  ####assembly	Assembly	913
+  ####read_experiment	Experiment	45
+  ####read_run	Read	45
+  ####wgs_set	Genome assembly contig set	913
+  # then set the results for RUG IDs (may need to surpress cert error `-k`): wgs_acc RUG id
+  curl -k -X GET --header 'Accept: text/plain' 'https://www.ebi.ac.uk/ena/portal/api/links/study?accession=PRJEB21624&result=wgs_set' > PRJEB21624_wgs_set.txt
+  # the first column is the RUG wgs id (almost... needs to get rid of the trailing 0's)
+  cd rumen
+  mkdir RUG_genomes & cd RUG_genomes
+  while read line; do curl -O http://ftp.ebi.ac.uk/pub/databases/ena/wgs/public/om/$line.fasta.gz; done < <(tail -n +2 ../PRJEB21624_wgs_set.txt | cut -f 1 | sed 's/000000$//g')
+  # should 913 of them. and the headers contain RMG contig/protein ids. 
+  ```
+  
+  
 ### analysis prcedures:
 
 + use bwa.
