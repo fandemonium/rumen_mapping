@@ -127,8 +127,22 @@
     for i in *.bam; do bedtools coverage -a ../../rumen/RMG_proteome.bed -b $i -s -hist | grep -vw "1.0000000" > ../coverages_hist/${i//mapped.bam/coverage_hist.txt}; done
     ```
     
+  + combine all files for downstream analysis   
+	```
+	cd /PATH/TO/WHERE/EVERYTHING/IS
+    cd 181214_fastqs/intersects
+	grep "" * > ../all_intersects.txt
+	cd 181214_fastqs/coverages
+	grep "" * > ../all_coverages.txt
+	cd 181214_fastqs/coverages_hist
+	grep "" * > ../all_coverages_hist.txt
+	```
+
+	Note: because so few reads mapped, median depth of the mapped region won't help much... 
+	
+
     
-+ use blastx (diamond)
++ BACKUP OPTION: if use blastx 
  
   + get nr:
     ```
