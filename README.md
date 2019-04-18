@@ -34,6 +34,8 @@
   cd RUG_genomes
   bash ../get_rug_genomes.sh
   # should 913 of them. and the headers contain RMG contig/protein ids. 
+  # get RUG organism to contig
+  for i in *.gz; do zcat $i | grep ">"; done > ../RUG_to_contigs.txt
   ```
   
   
