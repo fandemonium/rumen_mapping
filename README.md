@@ -29,8 +29,10 @@
   curl -k -X GET --header 'Accept: text/plain' 'https://www.ebi.ac.uk/ena/portal/api/links/study?accession=PRJEB21624&result=wgs_set' > PRJEB21624_wgs_set.txt
   # the first column is the RUG wgs id (almost... needs to get rid of the trailing 0's)
   cd rumen
-  mkdir RUG_genomes & cd RUG_genomes
-  while read line; do curl -O http://ftp.ebi.ac.uk/pub/databases/ena/wgs/public/om/$line.fasta.gz; done < <(tail -n +2 ../PRJEB21624_wgs_set.txt | cut -f 1 | sed 's/000000$//g')
+  mkdir RUG_genomes 
+  python ~/repos/rumen_mapping/scripts/ena_download.py PRJEB21624_wgs_set.txt > get_rug_genomes.sh
+  cd RUG_genomes
+  bash ../get_rug_genomes.sh
   # should 913 of them. and the headers contain RMG contig/protein ids. 
   ```
   
