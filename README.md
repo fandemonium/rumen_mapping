@@ -39,7 +39,7 @@
   ```
   
   
-### analysis prcedures:
+### analysis procedures:
 
 + use bwa.
   + create idex for the reference genome (need to concat all and checked. no duplicated headers):
