@@ -93,12 +93,8 @@
 
   + create bed file from the supplmentary file `41467_2018_3317_MOESM11_ESM.txt`:
     ```
-    paste -d "\t" <(cut -d ">" -f 2 RMG_genome_to_proteome.txt | cut -d " " -f 1 | rev | cut -d "_" -f 2- | rev) <(cut -d " " -f 3 RMG_genome_to_proteome.txt) <(cut -d " " -f 5 RMG_genome_to_proteome.txt) <(cut -d " " -f 1 RMG_genome_to_proteome.txt) <(cut -d " " -f 7 RMG_genome_to_proteome.txt) > RMG_proteome.bed
-    sed -i 's/.faa//g' RMG_proteome.bed 
-    sed -i 's/>//g' RMG_proteome.bed
-    rev RMG_proteome.bed | cut -f 1 | rev | sed 's/\-1/\-/g' | sed 's/1/\+/g' > temp.txt
-    paste -d "\t" <(cut -f 1-4 RMG_proteome.bed) <(rev RMG_genome_to_proteome.txt | cut -d "=" -f 1 | rev) <(cut -f 5 RMG_proteome.bed) > temp.bed
-    mv rumen/temp.bed rumen/RMG_proteome.bed   
+    python ~/repos/rumen_mapping/scripts/rug_parser.py RUG_to_contigs.txt
+    # NOTE: to get the bed file from RUGs_geomes, and the supplementary table is very ad hoc. lots of incosistencies. 
     ```
     
       bed file in a format like this (need to be 6 columns): id start end name some_value(eg. gc_content) strand
@@ -108,8 +104,14 @@
       k87_58769312    1307    2620    RMG_1025:k87_58769312_2 0.215   +
       k87_58269671    207     698     RMG_1025:k87_58269671_1 0.250   -
       ```
+      or
+      ```
+      ENA|OMVS01000105|OMVS01000105.1	222	281	RUG001:scaffold_10074_2
+      ENA|OMVS01000105|OMVS01000105.1	79	164	RUG001:scaffold_10074_3
+      ENA|OMVS01000105|OMVS01000105.1	105	132	RUG001:scaffold_10074_4
+      ENA|OMVS01000105|OMVS01000105.1	142	163	RUG001:scaffold_10074_4
+      ```
    
-    NOTE: to get the bed file from RUGs_geomes, and the supplementary table is very ad hoc. lots of incosistencies. 
     
   
   + bedtools to find intersect and coverage:
@@ -119,13 +121,13 @@
     mkdir intersects
     cd mapped_bam
     # find intersect:
-    for i in *.bam; do bedtools intersect -a ../../rumen/RMG_proteome.bed -b $i -bed -wa -wb -s > ../intersects/${i//mapped.bam/intersect.bed}; done
+    for i in *.bam; do bedtools intersect -a ../../rumen/rug_genes.bed -b $i -bed -wa -wb > ../intersects/${i//mapped.bam/intersect.bed}; done
     # find coverage
     mkdir ../coverages
-    for i in *.bam; do bedtools coverage -a ../../rumen/RMG_proteome.bed -b $i -s | grep -vw "0.0000000" > ../coverages/${i//mapped.bam/coverage.txt}; done
+    for i in *.bam; do bedtools coverage -a ../../rumen/rug_genes.bed -b $i | grep -vw "0.0000000" > ../coverages/${i//mapped.bam/coverage.txt}; done
     # coverage hist may be useful too.
     mkdir ../coverages_hist
-    for i in *.bam; do bedtools coverage -a ../../rumen/RMG_proteome.bed -b $i -s -hist | grep -vw "1.0000000" > ../coverages_hist/${i//mapped.bam/coverage_hist.txt}; done
+    for i in *.bam; do bedtools coverage -a ../../rumen/rug_genes.bed -b $i -hist | grep -vw "1.0000000" > ../coverages_hist/${i//mapped.bam/coverage_hist.txt}; done
     ```
     
   + combine all files for downstream analysis   
