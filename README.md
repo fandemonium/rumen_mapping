@@ -98,15 +98,19 @@
     sed -i 's/>//g' RMG_proteome.bed
     rev RMG_proteome.bed | cut -f 1 | rev | sed 's/\-1/\-/g' | sed 's/1/\+/g' > temp.txt
     paste -d "\t" <(cut -f 1-4 RMG_proteome.bed) <(rev RMG_genome_to_proteome.txt | cut -d "=" -f 1 | rev) <(cut -f 5 RMG_proteome.bed) > temp.bed
-    mv rumen/temp.bed rumen/RMG_proteome.bed
+    mv rumen/temp.bed rumen/RMG_proteome.bed   
     ```
     
       bed file in a format like this (need to be 6 columns): id start end name some_value(eg. gc_content) strand
+      note: the last 3 columns are optional. 
       ```
       k87_58769312    514     1122    RMG_1025:k87_58769312_1 0.268   +
       k87_58769312    1307    2620    RMG_1025:k87_58769312_2 0.215   +
       k87_58269671    207     698     RMG_1025:k87_58269671_1 0.250   -
       ```
+   
+    NOTE: to get the bed file from RUGs_geomes, and the supplementary table is very ad hoc. lots of incosistencies. 
+    
   
   + bedtools to find intersect and coverage:
     ```
