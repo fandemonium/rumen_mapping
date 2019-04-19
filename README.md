@@ -87,9 +87,11 @@
     grep ">" RMG_*.fa > ../RMG_genome_to_contigs.txt
     cd ../proteomes
     grep ">" RMG_*.faa > ../RMG_genome_to_proteome.txt
+    cd ../RUG_genomes
+    grep ">" all_rugs.fa > ../RUG_to_contigs.txt   
     ```
 
-  + create bed file from the proteome txt file:
+  + create bed file from the supplmentary file `41467_2018_3317_MOESM11_ESM.txt`:
     ```
     paste -d "\t" <(cut -d ">" -f 2 RMG_genome_to_proteome.txt | cut -d " " -f 1 | rev | cut -d "_" -f 2- | rev) <(cut -d " " -f 3 RMG_genome_to_proteome.txt) <(cut -d " " -f 5 RMG_genome_to_proteome.txt) <(cut -d " " -f 1 RMG_genome_to_proteome.txt) <(cut -d " " -f 7 RMG_genome_to_proteome.txt) > RMG_proteome.bed
     sed -i 's/.faa//g' RMG_proteome.bed 
