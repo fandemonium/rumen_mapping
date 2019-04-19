@@ -34,9 +34,9 @@
   cd RUG_genomes
   bash ../get_rug_genomes.sh
   # should 913 of them. and the headers contain RMG contig/protein ids. 
-  # get RUG organism to contig
-  for i in *.gz; do zcat $i | grep ">"; done > ../RUG_to_contigs.txt
   ```
+  
+  NOTE: The RMG contigs do not contain all RUG contigs/scafolds... Need to do mapping to RUG contigs
   
   
 ### analysis procedures:
@@ -47,6 +47,9 @@
     cd rumen/genomes
     cat *.fa > all_rmgs.fa
     bwa index -p ../bwa_index/rmg_genomes all_rmgs.fa
+    cd ../RUG_genomes
+    zcat *.gz > all_rugs.fa
+    bwa index -p ../bwa_index/rug_genomes all_rugs.fa
     ```
     
     NOTE: don't use pipe to combine cat and bwa... it runs into issues.
@@ -63,16 +66,17 @@
     for i in *.gz; do vsearch --threads 4 --fastq_filter $i --fastq_maxee 0.5 --fastq_maxns 0 --fastqout ../filtered_fq/${i//.fastq.gz/.maxee0.5.fq}; done
     ```
   
-  + mapping
+  + mapping (to rug genomes)
     ```
     mkdir bwa_bams
     cd filtered_fq
-    for i in *.fq; do bwa mem -t 4 /mnt/scratch/yangfan1/rumen/bwa_index/rmg_genomes $i | samtools sort -@4 -o ../bwa_bams/${i//.fq/.sorted.bam} -; done
+    for i in *.fq; do bwa mem -t 4 /mnt/scratch/yangfan1/rumen/bwa_index/rug_genomes $i | samtools sort -@4 -o ../bwa_bams/${i//.fq/.sorted.bam} -; done
     ```
-
+HERE
   + get mapped reads only:
     ```
-    mkdir ../bwa_bam
+    cd ../bwa_bams
+    mkdir ../mapped_bam
     for i in *.bam; do samtools view -b -F 4 -q 10 $i > ../mapped_bam/${i//sorted/mapped}; done
     ```
     
