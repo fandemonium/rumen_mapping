@@ -72,23 +72,14 @@
     cd filtered_fq
     for i in *.fq; do bwa mem -t 4 /mnt/scratch/yangfan1/rumen/bwa_index/rug_genomes $i | samtools sort -@4 -o ../bwa_bams/${i//.fq/.sorted.bam} -; done
     ```
-HERE
+
   + get mapped reads only:
     ```
     cd ../bwa_bams
     mkdir ../mapped_bam
     for i in *.bam; do samtools view -b -F 4 -q 10 $i > ../mapped_bam/${i//sorted/mapped}; done
     ```
-    
-  + OPTIONAL: mpileup (reference fa):
-    ```
-    cd /PATH/TO/WHERE/EVERYTHING/IS
-    cd 181214_fastqs
-    cd mapped_bam
-    mkdir ../ref_mpileup
-    for i in *.bam; do samtools mpileup -f ../../rumen/genomes/all_rmgs.fa $i > ../noref_mpileup/${i//.bam/.ref.txt}; done
-    ```
-  
+     
   + get reference header:
     ```
     cd /PATH/TO/WHERE/EVERYTHING/IS
